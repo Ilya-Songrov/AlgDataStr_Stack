@@ -19,7 +19,7 @@ class myStack
 
 using namespace std;
 
-// Stack
+// Stack 34
 int main(int argc, char *argv[])
 {
     myStack stack(4);
