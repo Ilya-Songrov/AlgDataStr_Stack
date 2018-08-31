@@ -6,7 +6,7 @@ template <class T>
 class myStack
 {
     private:
-        T *array; /* finish at the end */
+        T *array;
         int sizeMax;
         int top;
     public:
@@ -15,10 +15,11 @@ class myStack
         ~myStack(){ delete [] array; }
 
         inline void newArray(int count);
-         void push_backMy(T data);
-         void pop_backMy();
-         void clear();
-        inline bool isEmpty() { return top == 0; }
+
+        inline void push_backMy(T data);
+        inline void pop_backMy();
+        inline void clear();
+        inline bool isEmpty() { return (top == 0); }
         inline int size() const { return top; }
         inline void print() const;
 
@@ -70,7 +71,7 @@ myStack<T>::myStack(int size) : sizeMax(size), top(0)
         array = new T[sizeMax];
     }
     else{
-        cout << " Error. Stack overflow" <<endl; /* finish at the end */
+        cout << " Error. Stack overflow" <<endl;
     }
 }
 
@@ -151,7 +152,7 @@ T &myStack<T>::operator[] (int j)
     if(j <= top){
          return array[j];
     }
-    //    cout << " Error. Array index out of bounds" <<endl; /* finish at the end */
+    cout << " Error. Array index out of bounds" <<endl;
     return array[j+1];
 }
 
