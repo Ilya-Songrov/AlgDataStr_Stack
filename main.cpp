@@ -1,5 +1,6 @@
 #include <iostream>
 
+using namespace std;
 
 
 template <class T>
@@ -19,47 +20,88 @@ class myStack
         inline void push_backMy(T data);
         inline void pop_backMy();
         inline void clear();
-        inline bool isEmpty() { return (top == 0); }
+        inline bool isEmpty() { return bool(top == 0); }
         inline int size() const { return top; }
         inline void print() const;
 
         T &operator[] (int j);
         myStack<T>& operator= (myStack<T> &copyMyStack);
+
+
 };
 
 
+bool equal(char char1, char char2){
+    if(char1 == '(' && char2 == ')') return true;
+    if(char1 == '{' && char2 == '}') return true;
+    if(char1 == '[' && char2 == ']') return true;
+    return false;
+}
 
-using namespace std;
+string checkBrackets(string input)
+{
+    string result = "Success";
+//    myStack <char> stackBrackets(1000); // If you want your code to run quickly
+//    myStack <int> stackPosition(1000); // If you want your code to run quickly
+    myStack <char> stackBrackets;
+    myStack <int> stackPosition;
+    int step = 0;
+
+    for (size_t var = 0; var < input.size(); ++var)
+    {
+        step++;
+        char br = input[var];
+        if(br == '(' || br == ')' || br == '{' || br == '}' || br == '[' || br == ']'){
+            if(br == '(' || br == '{' || br == '['){
+                stackBrackets.push_backMy(input[var]);
+                stackPosition.push_backMy(step);
+            }
+            else{// closed bracket
+                if(!stackBrackets.isEmpty()){
+                    if(equal(stackBrackets[stackBrackets.size() - 1], input[var])){
+                        stackBrackets.pop_backMy();
+                        stackPosition.pop_backMy();
+                    }
+                    else{
+                        return to_string(step);
+                    }
+                }
+                else{// if you enter closed bracket and stackBrackets.isEmpty()
+                    return to_string(step);
+                }
+            }
+        }
+    }
+    if(step == 0){
+        return to_string(step);
+    }
+    if(!stackBrackets.isEmpty()){
+       return to_string(stackPosition[stackPosition.size() - 1]);
+    }
+    return result;
+}
 
 // Stack 34
 int main(int argc, char *argv[])
 {
-    myStack<int> stack(45);
-    myStack<int> stack2(7);
-    stack.push_backMy(34);
-    stack.size();
-    stack.push_backMy(35);
-    stack.size();
-    stack.push_backMy(36);
-    stack.size();
-    stack.push_backMy(37);
-    stack.size();
-    stack.print();
-    stack.pop_backMy();
-    stack.size();
-    stack.print();
-    stack.size();
-    stack2.print();
-    stack.size();
-    stack2.push_backMy(56);
-    stack.size();
-    stack2.push_backMy(57);
-    stack.size();
-    stack2.push_backMy(58);
-    stack.size();
-    stack = stack2;
-    stack.size();
-    stack.print();
+
+//    string str = "";
+//    cin >> str;
+//    cout << str << endl;
+//    cout << checkBrackets(str) << endl;
+
+    myStack <string> textBrackets;
+    textBrackets.push_backMy("([](){([])})");
+    textBrackets.push_backMy("()[]}");
+    textBrackets.push_backMy("{{[()]]");
+    textBrackets.push_backMy("foo(bar);");
+    textBrackets.push_backMy("foo(bar[i);");
+    for (int var = 0; var < textBrackets.size(); ++var)
+    {
+        cout << textBrackets[var] << endl;
+        cout << checkBrackets(textBrackets[var]) << endl;
+    }
+
 
     return 0;
 }
@@ -118,11 +160,11 @@ void myStack<T>::pop_backMy()
 {
     if(top > 0){
         top--;
-        if((float(sizeMax) / float(2)) > top){
-            sizeMax = sizeMax / 2;
-            if(sizeMax < 1) sizeMax = 1;
-            newArray(sizeMax);
-        }
+//        if((float(sizeMax) / float(2)) > top){
+//            sizeMax = sizeMax / 2;
+//            if(sizeMax < 1) sizeMax = 1;
+//            newArray(sizeMax);
+//        }
     }
 }
 
@@ -149,7 +191,7 @@ void myStack<T>::print() const
 template <class T>
 T &myStack<T>::operator[] (int j)
 {
-    if(j <= top){
+    if(j <= top && j >= 0 ){
          return array[j];
     }
     cout << " Error. Array index out of bounds" <<endl;
